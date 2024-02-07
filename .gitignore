@@ -1,0 +1,6 @@
+# ignore builds folder
+_builds
+build
+
+# bullshit folders
+.vscode
