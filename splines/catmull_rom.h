@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __H_VANYKA_CATMULL_ROM
+#define __H_VANYKA_CATMULL_ROM
+
 #include "curve.h"
 
 namespace vanyka {
@@ -46,3 +48,4 @@ V CatmullRom<V>::interpolate(float u, const V &P0, const V &P1, const V &P2, con
 }
 
 } // vanyka
+#endif

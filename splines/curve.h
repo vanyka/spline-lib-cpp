@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __H_VANYKA_CURVE
+#define __H_VANYKA_CURVE
 
 #include <algorithm>
 #include <vector>
@@ -103,3 +104,4 @@ void Curve<V>::AddNode(const V &node)
 }
 
 } // vanyka
+#endif
