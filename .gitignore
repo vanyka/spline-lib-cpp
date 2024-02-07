@@ -4,3 +4,6 @@ build
 
 # bullshit folders
 .vscode
+
+# files
+*.zip
