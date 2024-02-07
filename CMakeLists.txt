@@ -5,5 +5,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 project(Main)
 set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT App )
 
-add_subdirectory(Core)
+# add_subdirectory(Core)
 add_subdirectory(App)

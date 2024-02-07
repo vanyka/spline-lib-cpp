@@ -1,52 +1,27 @@
-// A simple program that computes the square root of a number
 #include <iostream>
-#include <string.h>
+#include <memory>
 
-#include <app/config.h>
-#include <vanyka.hpp>
-#include "segg.h"
+#include <catmull_rom.h>
+#include "vec2.h"
 
-void PrintAppVersion() {
-    std::cout << "App v" << APP_VERSION_MAJOR << '.' << APP_VERSION_MINOR << '.' << APP_VERSION_PATCH << std::endl;
-}
+using VEC2F = VEC2<float>;
 
-bool ProcessArgs(int argc, char* argv[]) {
-	constexpr char* versions[] = { "-v", "--version", "-V" };
-	for (int i = 1; i < argc; ++i) {
-		for (char* v : versions) {
-			if (std::strcmp(v, argv[i]) == 0) {
-				PrintAppVersion();
-				return true;
-			}
-		}
+using std::cout;
+int main(){
+    vanyka::CatmullRom<VEC2F> curve;
+	curve.SetSteps(10); // generate 100 interpolate points between the last 4 way points
+
+	std::vector<VEC2F> points;
+	points.push_back(VEC2F(2.f, 3.f));
+	points.push_back(VEC2F(3.f, 2.f));
+	points.push_back(VEC2F(4.f, 3.f));
+	points.push_back(VEC2F(5.f, 8.f));
+
+	curve.AddWayPoints(points.begin(), points.end());
+
+	std::cout << "nodes: " << curve.NodeCount() << std::endl;
+	std::cout << "total length: " << curve.TotalLength() << std::endl;
+	for (int i = 0; i < curve.NodeCount(); ++i) {
+		std::cout << "node #" << i << ": (" << curve.Node(i).x << ", " << curve.Node(i).y << ")" << std::endl;
 	}
-	return false;
-}
-
-int main(int argc, char* argv[])
-{
-	if (ProcessArgs(argc, argv)) 
-		return 0;
-	
-	//Calling Functions from a lib
-	vanyka::PrintHelloWorld();
-
-	//Using project internal files
-	Segg seggem;
-	std::cout << "Seggem Szaga: ";
-	switch (seggem.Szagol())
-	{
-	case Segg::Budos: std::cout << "Budos. uhh"; break;
-	case Segg::Illatos: std::cout << "Illatos."; break;
-	}
-	std::cout << std::endl;
-	seggem.Befosik();
-	std::cout << "Seggem Szaga: ";
-	switch (seggem.Szagol())
-	{
-	case Segg::Budos: std::cout << "Budos. uhh"; break;
-	case Segg::Illatos: std::cout << "Illatos."; break;
-	}
-	std::cout << std::endl;
-	return 0;
 }
