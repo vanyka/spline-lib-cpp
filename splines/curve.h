@@ -52,7 +52,7 @@ void Curve<V>::AddWayPoints(const It &begin, const It &end, bool genControlPoint
 
 	if (genControlPoints)
 	{
-		const V c1 = *begin * 2 - *(begin + 1);
+		const V c1 = (*begin * 2) - *(begin + 1);
 		this->AddWayPoint(c1);
 	}
 
