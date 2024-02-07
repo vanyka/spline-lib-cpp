@@ -1,9 +1,7 @@
-#ifndef _H__CATMULL_ROM_H
-#define _H__CATMULL_ROM_H
-
+#pragma once
 #include "curve.h"
 
-namespace vanyka{
+namespace vanyka {
 
 template <typename V>
 class CatmullRom : public Curve<V>
@@ -11,13 +9,15 @@ class CatmullRom : public Curve<V>
 public:
 	CatmullRom() : Curve<V>() {}
 
+	virtual void _OnWayPointAdded();
+
 protected:
 	V interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
 };
 
 // Definitions
 
-/*template <typename V>
+template <typename V>
 void CatmullRom<V>::_OnWayPointAdded()
 {
 	if (this->mWayPoints.size() < 4)
@@ -31,7 +31,7 @@ void CatmullRom<V>::_OnWayPointAdded()
 
 		this->AddNode(interpolate(u, this->mWayPoints[pt - 1], this->mWayPoints[pt], this->mWayPoints[pt + 1], this->mWayPoints[pt + 2]));
 	}
-}*/
+}
 
 template <typename V>
 V CatmullRom<V>::interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3)
@@ -46,5 +46,3 @@ V CatmullRom<V>::interpolate(float u, const V &P0, const V &P1, const V &P2, con
 }
 
 } // vanyka
-
-#endif

@@ -1,10 +1,10 @@
-#ifndef _H__CURVE_H
-#define _H__CURVE_H
+#pragma once
 
 #include <algorithm>
 #include <vector>
 #include <cassert>
-namespace vanyka{
+
+namespace vanyka {
 
 template <typename V>
 class Curve
@@ -18,15 +18,13 @@ protected:
 public:
 	Curve() : mSteps(10) {}
 
-	void AddWayPoint(const V& point);
-
+	void AddWayPoint(const V &point);
 	template <class It>
 	void AddWayPoints(const It &begin, const It &end, bool genControlPoints = true);
 	void Clear();
 
 	V Node(int i) const { return mNodes[i]; }
 	float LengthFromStartingPoint(int i) const { return mDistances[i]; }
-	bool HasNextNode(int i) const { return static_cast<int>(mNodes.size()) > i; }
 	int NodeCount() const { return static_cast<int>(mNodes.size()); }
 	bool IsEmpty() { return mNodes.empty(); }
 	double TotalLength() const
@@ -35,11 +33,11 @@ public:
 		return mDistances[mDistances.size() - 1];
 	}
 
-	void incrementSteps(int steps) { mSteps += steps; }
 	void SetSteps(int steps) { mSteps = steps; }
 
 protected:
 	void AddNode(const V &node);
+	virtual void _OnWayPointAdded() = 0;
 };
 
 // Definitions
@@ -54,7 +52,7 @@ void Curve<V>::AddWayPoints(const It &begin, const It &end, bool genControlPoint
 	if (genControlPoints)
 	{
 		const V c1 = *begin * 2 - *(begin + 1);
-		AddWayPoint(c1);
+		this->AddWayPoint(c1);
 	}
 
 	std::for_each(begin, end, [this](const V &p){ 
@@ -64,7 +62,7 @@ void Curve<V>::AddWayPoints(const It &begin, const It &end, bool genControlPoint
 	if (genControlPoints)
 	{
 		const V c2 = *(end - 1) * 2 - *(end - 2);
-		AddWayPoint(c2);
+		this->AddWayPoint(c2);
 	}
 }
 
@@ -74,6 +72,13 @@ void Curve<V>::Clear()
 	mNodes.clear();
 	mWayPoints.clear();
 	mDistances.clear();
+}
+
+template <typename V>
+void Curve<V>::AddWayPoint(const V &point)
+{
+	mWayPoints.push_back(point);
+	_OnWayPointAdded();
 }
 
 template <typename V>
@@ -98,5 +103,3 @@ void Curve<V>::AddNode(const V &node)
 }
 
 } // vanyka
-
-#endif
