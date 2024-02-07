@@ -1,0 +1,8 @@
+# Folders
+test export-ignore
+scripts export-ignore
+
+# Files
+.git* export-ignore
+*.txt export-ignore
+
