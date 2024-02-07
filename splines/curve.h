@@ -25,7 +25,7 @@ public:
 
 	V Node(int i) const { return mNodes[i]; }
 	float LengthFromStartingPoint(int i) const { return mDistances[i]; }
-	int NodeCount() const { return static_cast<int>(mNodes.size()); }
+	size_t NodeCount() const { return static_cast<int>(mNodes.size()); }
 	bool IsEmpty() { return mNodes.empty(); }
 	double TotalLength() const
 	{
@@ -95,7 +95,7 @@ void Curve<V>::AddNode(const V &node)
 	}
 	else
 	{
-		int new_node_index = mNodes.size() - 1;
+		size_t new_node_index = mNodes.size() - 1;
 
 		float segment_distance = (mNodes[new_node_index] - mNodes[new_node_index - 1]).Length();
 		mDistances.push_back(segment_distance + mDistances[new_node_index - 1]);

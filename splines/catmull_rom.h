@@ -23,8 +23,8 @@ void CatmullRom<V>::_OnWayPointAdded()
 	if (this->mWayPoints.size() < 4)
 		return;
 
-	int new_control_point_index = this->mWayPoints.size() - 1;
-	int pt = new_control_point_index - 2;
+	size_t new_control_point_index = this->mWayPoints.size() - 1;
+	size_t pt = new_control_point_index - 2;
 	for (int i = 0; i <= this->mSteps; i++)
 	{
 		float u = (float)i / (float)this->mSteps;
