@@ -11,29 +11,11 @@ class CatmullRom : public Curve<V>
 public:
 	CatmullRom() : Curve<V>() {}
 
-	virtual void _OnWayPointAdded();
-
 protected:
 	V interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
 };
 
 // Definitions
-
-template <typename V>
-void CatmullRom<V>::_OnWayPointAdded()
-{
-	if (this->mWayPoints.size() < 4)
-		return;
-
-	size_t new_control_point_index = this->mWayPoints.size() - 1;
-	size_t pt = new_control_point_index - 2;
-	for (int i = 0; i <= this->mSteps; i++)
-	{
-		float u = (float)i / (float)this->mSteps;
-
-		this->AddNode(interpolate(u, this->mWayPoints[pt - 1], this->mWayPoints[pt], this->mWayPoints[pt + 1], this->mWayPoints[pt + 2]));
-	}
-}
 
 template <typename V>
 V CatmullRom<V>::interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3)
