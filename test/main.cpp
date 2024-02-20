@@ -23,7 +23,6 @@ int main(){
 	// VectorTest();
 
     vanyka::CatmullRom<Vector2<float>> curve;
-	curve.SetSteps(10); // generate 100 interpolate points between the last 4 way points
 
 	std::vector<Vector2<float>> points;
 	points.push_back({ 2.f, 3.f });
@@ -31,11 +30,13 @@ int main(){
 	points.push_back({ 4.f, 3.f });
 	points.push_back({ 5.f, 8.f });
 
-	curve.AddWayPoints(points.begin(), points.end());
+	curve.AddSupportPoints(points.begin(), points.end());
 
-	std::cout << "nodes: " << curve.NodeCount() << std::endl;
-	std::cout << "total length: " << curve.TotalLength() << std::endl;
-	for (int i = 0; i < curve.NodeCount(); ++i) {
-		std::cout << "node #" << i << ": " << curve.Node(i) << std::endl;
+	auto genps = curve.GeneratePoints(2);
+
+	std::cout << "nodes: " << genps.size() << std::endl;
+	// std::cout << "total length: " << curve.TotalLength() << std::endl;
+	for (int i = 0; i < genps.size(); ++i) {
+		std::cout << "node #" << i << ": " << genps[i] << std::endl;
 	}
 }
