@@ -1,7 +1,7 @@
 #include <iostream>
 #include <memory>
 
-#include <catmull_rom.h>
+#include <splines/catmull_rom.h>
 #include "vector2.h"
 
 using std::cout;
@@ -22,7 +22,6 @@ inline void VectorTest() {
 inline void PrintGeoguessrData(const std::vector<Vector2f>& points) {
 	std::cout << '{';
 	for (int i = 0; i < points.size(); ++i) {
-		// std::cout << "node #" << i << ": " << genps[i] << std::endl;
 		if (i != 0) std::cout << ',';
 		std::cout << points[i];
 	}
