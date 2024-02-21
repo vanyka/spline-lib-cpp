@@ -1,5 +1,9 @@
 # ignore builds folder
-_builds
+[Bb]uild
+[Bb]uilds
+_[Bb]uild
+_[Bb]uilds
+
 build
 
 # bullshit folders
