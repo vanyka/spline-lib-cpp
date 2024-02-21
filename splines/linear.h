@@ -5,7 +5,7 @@
 
 namespace vanyka {
 
-template <typename V>
+template <class V>
 class LinearSpline : public Spline<V>{
 	std::vector<V> GeneratePoints(int res = 10) const override;
 };

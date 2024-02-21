@@ -5,7 +5,7 @@
 
 namespace vanyka {
 
-template <typename V, bool PassAllSupportPoint = false>
+template <class V, bool PassAllSupportPoint = false>
 class CatmullRomSpline : public Spline<V>
 {
 	static V Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
@@ -14,7 +14,7 @@ public:
 	std::vector<V> GeneratePoints(int res = 10) const override;
 };
 
-template <typename V, bool PassAllSupportPoint>
+template <class V, bool PassAllSupportPoint>
 V CatmullRomSpline<V, PassAllSupportPoint>::Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3)
 {
 	V point;
@@ -26,7 +26,7 @@ V CatmullRomSpline<V, PassAllSupportPoint>::Interpolate(float u, const V &P0, co
 	return point;
 }
 
-template <typename V, bool PassAllSupportPoint>
+template <class V, bool PassAllSupportPoint>
 std::vector<V> CatmullRomSpline<V, PassAllSupportPoint>::GeneratePoints(int res) const {
 	std::vector<V> points;
 	if (mSupportPoints.size() < 4) 

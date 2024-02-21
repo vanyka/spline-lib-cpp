@@ -2,36 +2,54 @@
 #include <memory>
 
 #include <splines/catmull_rom.h>
+#include <splines/bezier.h>
 #include "vector2.h"
 
-using std::cout;
+#pragma region Macros
+
+#ifndef NDEBUG
+#define DEBUG
+#endif
+
+#pragma endregion
+
+
 using namespace vanyka;
 
 inline void VectorTest() {
 	Vector2f vec1 = {0.5f, 0.2f};
 	Vector2f vec2 = { 5.3f, -8.65f };
-	cout << vec1 << '\t' << vec2 << std::endl;
-	cout << "+: " << (vec1 + vec2) << std::endl;
-	cout << "-: " << (vec1 - vec2) << std::endl;
-	cout << "*: " << (vec1 * vec2) << std::endl;
-	cout << "/: " << (vec1 / vec2) << std::endl;
-	cout << "* 2.5: " << vec1 * 2.5f << " | " << 2.5f * vec1 << std::endl;
-	cout << "/ 2.5: " << vec1 / 2.5f << std::endl;
+	std::cout << vec1 << '\t' << vec2 << std::endl;
+	std::cout << "+: " << (vec1 + vec2) << std::endl;
+	std::cout << "-: " << (vec1 - vec2) << std::endl;
+	std::cout << "*: " << (vec1 * vec2) << std::endl;
+	std::cout << "/: " << (vec1 / vec2) << std::endl;
+	std::cout << "* 2.5: " << vec1 * 2.5f << " | " << 2.5f * vec1 << std::endl;
+	std::cout << "/ 2.5: " << vec1 / 2.5f << std::endl;
 }
 
-inline void PrintGeoguessrData(const std::vector<Vector2f>& points) {
+template<class T>
+inline void PrintAsArray(const std::vector<T>& data) {
 	std::cout << '{';
-	for (int i = 0; i < points.size(); ++i) {
+	for (int i = 0; i < data.size(); ++i) {
 		if (i != 0) std::cout << ',';
-		std::cout << points[i];
+		std::cout << data[i];
 	}
 	std::cout << '}' << std::endl;
+}
+
+template<class T>
+inline void PrintVectorNodeData(const std::vector<T>& data) {
+	std::cout << "nodes: " << data.size() << std::endl;
+	for (int i = 0; i < data.size(); ++i) {
+		std::cout << "node #" << i << ": " << data[i] << std::endl;
+	}
 }
 
 int main(){
 	// VectorTest();
 
-	std::unique_ptr<vanyka::Spline<Vector2f>> curve = std::make_unique<vanyka::CatmullRomSpline<Vector2f>>();
+	std::unique_ptr<Spline<Vector2f>> curve = std::make_unique<CatmullRomSpline<Vector2f>>();
 
 	std::vector<Vector2<float>> points;
 	points.push_back({ 3.f, 2.f });
@@ -41,11 +59,11 @@ int main(){
 
 	curve->AddSupportPoints(points.begin(), points.end());
 
-	std::vector<Vector2f> genps = curve->GeneratePoints(10);
+#ifdef DEBUG
+	PrintAsArray(curve->GeneratePoints());
+#else
+	PrintVectorNodeData(curve->GeneratePoints());
+#endif // DEBUG
 
-	PrintGeoguessrData(genps);
-	/*std::cout << "nodes: " << genps.size() << std::endl;
-	for (int i = 0; i < genps.size(); ++i) {
-		std::cout << "node #" << i << ": " << genps[i] << std::endl;
-	}*/
+	
 }
