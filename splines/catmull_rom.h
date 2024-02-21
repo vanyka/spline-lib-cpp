@@ -1,21 +1,21 @@
 #ifndef __H_VANYKA_CATMULL_ROM
 #define __H_VANYKA_CATMULL_ROM
 
-#include "curve.h"
+#include "spline.h"
 
 namespace vanyka {
 
 template <typename V, bool PassAllSupportPoint = false>
-class CatmullRom : public Curve<V>
+class CatmullRomSpline : public Spline<V>
 {
 	static V Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
 public:
-	CatmullRom() : Curve<V>() {}
+	CatmullRomSpline() : Spline<V>() {}
 	std::vector<V> GeneratePoints(int res = 10) const override;
 };
 
 template <typename V, bool PassAllSupportPoint>
-V CatmullRom<V, PassAllSupportPoint>::Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3)
+V CatmullRomSpline<V, PassAllSupportPoint>::Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3)
 {
 	V point;
 	point = (-P0 + P1 * 3 - P2 * 3 + P3) * (u * u * u) / 2;
@@ -27,7 +27,7 @@ V CatmullRom<V, PassAllSupportPoint>::Interpolate(float u, const V &P0, const V 
 }
 
 template <typename V, bool PassAllSupportPoint>
-std::vector<V> CatmullRom<V, PassAllSupportPoint>::GeneratePoints(int res) const {
+std::vector<V> CatmullRomSpline<V, PassAllSupportPoint>::GeneratePoints(int res) const {
 	std::vector<V> points;
 	if (mSupportPoints.size() < 4) 
 		// Here Should be a warning that too few support points available

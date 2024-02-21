@@ -32,7 +32,7 @@ inline void PrintGeoguessrData(const std::vector<Vector2f>& points) {
 int main(){
 	// VectorTest();
 
-	std::unique_ptr<vanyka::Curve<Vector2f>> curve = std::make_unique<vanyka::CatmullRom<Vector2f, true>>();
+	std::unique_ptr<vanyka::Spline<Vector2f>> curve = std::make_unique<vanyka::CatmullRomSpline<Vector2f>>();
 
 	std::vector<Vector2<float>> points;
 	points.push_back({ 3.f, 2.f });
