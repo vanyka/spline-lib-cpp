@@ -18,7 +18,7 @@ public:
     void AddSupportPoint(const V& p);
     template<class It> 
     void AddSupportPoints(const It& begin, const It& end);
-    virtual std::vector<V> GeneratePoints(int res = 10);
+    virtual std::vector<V> GeneratePoints(int res = 10) const;
 };
 
 template<class V>
@@ -34,7 +34,7 @@ void Curve<V>::AddSupportPoint(const V& p){
 }
 
 template<class V>
-std::vector<V> Curve<V>::GeneratePoints(int res){
+std::vector<V> Curve<V>::GeneratePoints(int res) const {
     std::vector<V> points;
 
     auto Lerp = [](float t, const V& p1, const V& p2){
