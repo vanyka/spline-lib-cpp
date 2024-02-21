@@ -5,21 +5,17 @@
 
 namespace vanyka {
 
-template <typename V>
+template <typename V, bool PassAllSupportPoint = false>
 class CatmullRom : public Curve<V>
 {
-	bool mGenerateEndControlPoints;
-	V Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
-
+	static V Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
 public:
-	CatmullRom(bool genPoints = false) : Curve<V>(), mGenerateEndControlPoints(genPoints) {}
-	std::vector<V> GeneratePoints(int res = 10) override;
+	CatmullRom() : Curve<V>() {}
+	std::vector<V> GeneratePoints(int res = 10) const override;
 };
 
-// Definitions
-
-template <typename V>
-V CatmullRom<V>::Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3)
+template <typename V, bool PassAllSupportPoint>
+V CatmullRom<V, PassAllSupportPoint>::Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3)
 {
 	V point;
 	point = (-P0 + P1 * 3 - P2 * 3 + P3) * (u * u * u) / 2;
@@ -30,21 +26,46 @@ V CatmullRom<V>::Interpolate(float u, const V &P0, const V &P1, const V &P2, con
 	return point;
 }
 
-template <typename V>
-std::vector<V> CatmullRom<V>::GeneratePoints(int res) {
+template <typename V, bool PassAllSupportPoint>
+std::vector<V> CatmullRom<V, PassAllSupportPoint>::GeneratePoints(int res) const {
 	std::vector<V> points;
 	if (mSupportPoints.size() < 4) 
 		// Here Should be a warning that too few support points available
 		return points;
 
-	// points.reserve((points.size() - 3) * res);
+	if (PassAllSupportPoint) {
+		V endPoints[2] = {
+			(mSupportPoints[0] * 3 - mSupportPoints[1])/ 2,
+			(mSupportPoints[mSupportPoints.size() - 1] * 3 - mSupportPoints[mSupportPoints.size() - 2]) / 2
+		};
+		points.reserve((mSupportPoints.size() - 1) * res);
+		points.push_back(mSupportPoints[0]);
+		for (int i = 2; i <= mSupportPoints.size(); ++i) {
+			const V& v1 = i - 3 < 0 ? endPoints[0] : mSupportPoints[i - 3];
+			const V& v2 = mSupportPoints[i - 2];
+			const V& v3 = mSupportPoints[i - 1];
+			const V& v4 = i == mSupportPoints.size() ? endPoints[1] : mSupportPoints[i];
+			for (int j = 1; j < res; ++j) {
+				const float t = (float)j / (float)res;
+				points.push_back(Interpolate(t, v1, v2, v3, v4));
+			}
+			points.push_back(v3);
+		}
+		return points;
+	}
+
+	points.reserve((mSupportPoints.size() - 3) * res);
 	points.push_back(mSupportPoints[1]);
 	for (int i = 3; i < mSupportPoints.size(); ++i) {
+		const V& v1 = mSupportPoints[i - 3];
+		const V& v2 = mSupportPoints[i - 2];
+		const V& v3 = mSupportPoints[i - 1];
+		const V& v4 = mSupportPoints[i];
 		for (int j = 1; j < res; ++j) {
 			const float t = (float)j / (float)res;
-			points.push_back(Interpolate(t, mSupportPoints[i - 3], mSupportPoints[i - 2], mSupportPoints[i - 1], mSupportPoints[i]));
+			points.push_back(Interpolate(t, v1, v2, v3, v4));
 		}
-		points.push_back(mSupportPoints[i - 1]);
+		points.push_back(v3);
 	}
 
 	return points;
