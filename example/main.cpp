@@ -19,24 +19,34 @@ inline void VectorTest() {
 	cout << "/ 2.5: " << vec1 / 2.5f << std::endl;
 }
 
+inline void PrintGeoguessrData(const std::vector<Vector2f>& points) {
+	std::cout << '{';
+	for (int i = 0; i < points.size(); ++i) {
+		// std::cout << "node #" << i << ": " << genps[i] << std::endl;
+		if (i != 0) std::cout << ',';
+		std::cout << points[i];
+	}
+	std::cout << '}' << std::endl;
+}
+
 int main(){
 	// VectorTest();
 
-    vanyka::CatmullRom<Vector2<float>> curve;
+	std::unique_ptr<vanyka::Curve<Vector2f>> curve = std::make_unique<vanyka::CatmullRom<Vector2f>>();
 
 	std::vector<Vector2<float>> points;
-	points.push_back({ 2.f, 3.f });
 	points.push_back({ 3.f, 2.f });
-	points.push_back({ 4.f, 3.f });
-	points.push_back({ 5.f, 8.f });
+	points.push_back({ 4.f, 6.f });
+	points.push_back({ 8.f, 8.f });
+	points.push_back({ 10.f, 14.f });
 
-	curve.AddSupportPoints(points.begin(), points.end());
+	curve->AddSupportPoints(points.begin(), points.end());
 
-	auto genps = curve.GeneratePoints(2);
+	std::vector<Vector2f> genps = curve->GeneratePoints(10);
 
-	std::cout << "nodes: " << genps.size() << std::endl;
-	// std::cout << "total length: " << curve.TotalLength() << std::endl;
+	PrintGeoguessrData(genps);
+	/*std::cout << "nodes: " << genps.size() << std::endl;
 	for (int i = 0; i < genps.size(); ++i) {
 		std::cout << "node #" << i << ": " << genps[i] << std::endl;
-	}
+	}*/
 }
