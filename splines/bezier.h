@@ -30,7 +30,8 @@ namespace vanyka
     template <class V>
     V BezierSpline<V>::Interpolate3(const float &t, const V &p1, const V &p2, const V &p3)
     {
-        throw "Not Implemented";
+		const float nt = 1.f - t;
+		return p1 * (nt * nt) + p2 * (nt * nt * t) + p3 * t;
     }
 
     template <class V>
@@ -44,7 +45,7 @@ namespace vanyka
 	inline void BezierSpline<V>::GeneratePoints3(std::vector<V>& points, const int& res) const {
 		points.reserve((mSupportPoints.size() - 1) / 2 * res);
 		points.push_back(mSupportPoints[0]);
-		for (size_t i = 2; i < mSupportPoints.size(); i += 3)
+		for (size_t i = 2; i < mSupportPoints.size(); i += 2)
 		{
 			const V& v1 = mSupportPoints[i - 2];
 			const V& v2 = mSupportPoints[i - 1];
