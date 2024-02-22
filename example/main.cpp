@@ -49,7 +49,7 @@ inline void PrintVectorNodeData(const std::vector<T>& data) {
 int main(){
 	// VectorTest();
 
-	std::unique_ptr<Spline<Vector2f>> curve = std::make_unique<CatmullRomSpline<Vector2f, true>>();
+	std::unique_ptr<Spline<Vector2f>> curve = std::make_unique<BezierSpline<Vector2f>>();
 
 	std::vector<Vector2<float>> points;
 	points.push_back({ 3.f, 2.f });
