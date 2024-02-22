@@ -5,4 +5,4 @@ scripts export-ignore
 # Files
 .git* export-ignore
 *.txt export-ignore
-*.md export-ignore
+TODO.md export-ignore
