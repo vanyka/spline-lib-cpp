@@ -13,6 +13,7 @@ class CatmullRomSpline : public Spline<V>
 
 public:
 	std::vector<V> GeneratePoints(int res = 10) const override;
+	V operator()(const float& t) const override;
 };
 
 template <class V, bool PassAllSupportPoint>
@@ -25,6 +26,41 @@ V CatmullRomSpline<V, PassAllSupportPoint>::Interpolate(float u, const V &P0, co
 	point += P1;
 
 	return point;
+}
+
+template <class V, bool PassAllSupportPoint>
+V CatmullRomSpline<V, PassAllSupportPoint>::operator()(const float& t) const {
+	if (mSupportPoints.size() < 4)
+		throw "Not enough points";
+
+	const size_t segmentCount = PassAllSupportPoint ? mSupportPoints.size() - 1 : mSupportPoints.size() - 3;
+	float localt; size_t index;
+	std::tie(localt, index) = CalculateSegmentInfo(t, segmentCount);
+
+	if (index == 0)
+		return Interpolate(localt,
+			mSupportPoints[index],
+			mSupportPoints[index],
+			mSupportPoints[index + 1],
+			mSupportPoints[index + 2]
+		);
+	--index;
+	if (index + 2 == segmentCount) {
+
+		return Interpolate(localt,
+			mSupportPoints[index],
+			mSupportPoints[index + 1],
+			mSupportPoints[index + 2],
+			mSupportPoints[index + 2]
+		);
+	}
+
+	return Interpolate(localt, 
+		mSupportPoints[index], 
+		mSupportPoints[index + 1], 
+		mSupportPoints[index + 2], 
+		mSupportPoints[index + 3]
+	);
 }
 
 template <class V, bool PassAllSupportPoint>

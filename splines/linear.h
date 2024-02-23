@@ -13,7 +13,19 @@ class LinearSpline : public Spline<V>
 
 public:
 	std::vector<V> GeneratePoints(int res = 10) const override;
+	V operator()(const float& t) const override;
 };
+
+template <class V>
+V LinearSpline<V>::operator()(const float& t) const {
+	if(mSupportPoints.size() < 2) 
+		throw "Not enough points";
+
+	float localt; size_t index;
+	std::tie(localt, index) = CalculateSegmentInfo(t, mSupportPoints.size() - 1);
+	
+	return Lerp(localt, mSupportPoints[index], mSupportPoints[index + 1]);
+}
 
 template <class V>
 std::vector<V> LinearSpline<V>::GeneratePoints(int res) const

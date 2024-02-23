@@ -28,6 +28,7 @@ public:
 
     BezierType GetType() const { return mBezierType; }
     std::vector<V> GeneratePoints(int res = 10) const override;
+    V operator()(const float& t) const override;
 };
 
 template <class V>
@@ -42,6 +43,29 @@ V BezierSpline<V>::Interpolate4(const float &t, const V &p1, const V &p2, const 
 {
     const float nt = 1.f - t;
     return p1 * (nt * nt * nt) + p2 * (3 * nt * nt * t) + p3 * (3 * nt * t * t) + p4 * (t * t * t);
+}
+
+template <class V>
+V BezierSpline<V>::operator()(const float& t) const {
+    size_t stepSize;
+    switch (mBezierType) {
+    case BezierType::TWO_CONTROL_POINT: stepSize = 2; break;
+    case BezierType::ONE_CONTROL_POINT: stepSize = 3; break;
+    }
+
+    if (mSupportPoints.size() < stepSize + 1)
+        throw "Not enough points";
+
+    const size_t segmentCount = (mSupportPoints.size() - 1) / stepSize;
+    float localt; size_t index;
+    std::tie(localt, index) = CalculateSegmentInfo(t, segmentCount);
+
+    index *= stepSize;
+
+    switch (mBezierType) {
+    case BezierType::TWO_CONTROL_POINT: return Interpolate4(localt, mSupportPoints[index], mSupportPoints[index + 1], mSupportPoints[index + 2], mSupportPoints[index + 3]);
+    case BezierType::ONE_CONTROL_POINT: return Interpolate3(localt, mSupportPoints[index], mSupportPoints[index + 1], mSupportPoints[index + 2]);
+    }
 }
 
 template <class V>

@@ -59,14 +59,18 @@ int main(){
 	points.push_back({ -2.f, 6.f });
 	points.push_back({ 12.f, 12.f });
 	points.push_back({ 10.f, 14.f });
-	points.push_back({ 13.f, 6.f });
-	points.push_back({ 14.f, 8.f });
-	points.push_back({ 17.f, 5.f });
+
 
 	curve->AddSupportPoints(points.begin(), points.end());
 
+	std::vector<Vector2f> res;
+	for (float t = 0.f; t <= 1.f; t += 1.f / 100.f) {
+		res.push_back((*curve)(t));
+	}
+
 #ifdef DEBUG
-	PrintAsArray(curve->GeneratePoints(20));
+	PrintAsArray(res);
+	//PrintAsArray(curve->GeneratePoints(20));
 #else
 	PrintVectorNodeData(curve->GeneratePoints());
 #endif // DEBUG
