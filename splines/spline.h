@@ -1,5 +1,5 @@
-#ifndef __H_VANYKA_CURVE
-#define __H_VANYKA_CURVE
+#ifndef __H_VANYKA_SPLINE
+#define __H_VANYKA_SPLINE
 
 #include <vector>
 

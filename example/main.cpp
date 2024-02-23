@@ -25,6 +25,10 @@ inline void VectorTest() {
 	std::cout << "/: " << (vec1 / vec2) << std::endl;
 	std::cout << "* 2.5: " << vec1 * 2.5f << " | " << 2.5f * vec1 << std::endl;
 	std::cout << "/ 2.5: " << vec1 / 2.5f << std::endl;
+	std::cout << Vector2f::one << std::endl;
+	std::cout << Vector2f::left << std::endl;
+	std::cout << Vector2f::Distance(vec1, vec2) << std::endl;
+	std::cout << vec2.Normalize() << std::endl;
 }
 
 template<class T>
