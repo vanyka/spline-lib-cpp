@@ -3,6 +3,8 @@
 
 #include "spline.h"
 
+#define mSupportPoints this->mSupportPoints
+
 namespace vanyka
 {
 
@@ -58,7 +60,7 @@ V BezierSpline<V>::operator()(const float& t) const {
 
     const size_t segmentCount = (mSupportPoints.size() - 1) / stepSize;
     float localt; size_t index;
-    std::tie(localt, index) = CalculateSegmentInfo(t, segmentCount);
+    std::tie(localt, index) = this->CalculateSegmentInfo(t, segmentCount);
 
     index *= stepSize;
 
@@ -129,4 +131,7 @@ std::vector<V> BezierSpline<V>::GeneratePoints(int res) const
 }
 
 } // vanyka
+
+#undef mSupportPoints
+
 #endif

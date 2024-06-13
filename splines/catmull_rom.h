@@ -3,6 +3,8 @@
 
 #include "spline.h"
 
+#define mSupportPoints this->mSupportPoints
+
 namespace vanyka
 {
 
@@ -35,7 +37,7 @@ V CatmullRomSpline<V, PassAllSupportPoint>::operator()(const float& t) const {
 
 	const size_t segmentCount = PassAllSupportPoint ? mSupportPoints.size() - 1 : mSupportPoints.size() - 3;
 	float localt; size_t index;
-	std::tie(localt, index) = CalculateSegmentInfo(t, segmentCount);
+	std::tie(localt, index) = this->CalculateSegmentInfo(t, segmentCount);
 
 	if (index == 0)
 		return Interpolate(localt,
@@ -111,4 +113,7 @@ std::vector<V> CatmullRomSpline<V, PassAllSupportPoint>::GeneratePoints(int res)
 }
 
 } // vanyka
+
+#undef mSupportPoints
+
 #endif

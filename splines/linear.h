@@ -3,6 +3,8 @@
 
 #include "spline.h"
 
+#define mSupportPoints this->mSupportPoints
+
 namespace vanyka
 {
 
@@ -22,7 +24,7 @@ V LinearSpline<V>::operator()(const float& t) const {
 		throw "Not enough points";
 
 	float localt; size_t index;
-	std::tie(localt, index) = CalculateSegmentInfo(t, mSupportPoints.size() - 1);
+	std::tie(localt, index) = this->CalculateSegmentInfo(t, mSupportPoints.size() - 1);
 	
 	return Lerp(localt, mSupportPoints[index], mSupportPoints[index + 1]);
 }
@@ -59,4 +61,7 @@ std::vector<V> LinearSpline<V>::GeneratePoints(int res) const
 }
 
 } // vanyka
+
+#undef mSupportPoints
+
 #endif
