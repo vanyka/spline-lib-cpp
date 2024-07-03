@@ -9,26 +9,26 @@ namespace vanyka
 {
 
 template <class V>
-class EvenlySpacedSplineAdapter {
+class EvenDistributedSplineAdapter {
 	std::vector<V>		mPoints;
 	std::vector<float>	mSegmentLengths;
 	float				mSplineLength;
-	void Init(const Spline<V>& spline, float demanded_length, int resolution);
+	void Init(const Spline<V>& spline, float demandedLength, int resolution);
 	V GetPoint(float distance) const;
 	V Lerp(const V& v1, const V& v2, const float& t) const { return v1 + (v2 - v1) * t; }
 public:
-	EvenlySpacedSplineAdapter(const Spline<V>& spline, const float& demanded_length = 0.f, const int& resolution = 30)
-		{ Init(spline, demanded_length, resolution); }
-	EvenlySpacedSplineAdapter(const Spline<V>& spline, const int& resolution) 
+	EvenDistributedSplineAdapter(const Spline<V>& spline, const float& demandedLength = 0.f, const int& resolution = 10)
+		{ Init(spline, demandedLength, resolution); }
+	EvenDistributedSplineAdapter(const Spline<V>& spline, const int& resolution)
 		{ Init(spline, 0.f, resolution); }
 	V operator()(const float& distance) const { return GetPoint(distance); }
-	std::vector<V> GeneratePoints(int res = 30) const;
+	std::vector<V> GeneratePoints(int res = 100) const;
 	float GetSplineLength() const { return mSplineLength; }
 };
 
 template <class V>
-void EvenlySpacedSplineAdapter<V>::Init(
-	const Spline<V>& spline, float demanded_length, int res
+void EvenDistributedSplineAdapter<V>::Init(
+	const Spline<V>& spline, float demandedLength, int res
 ) {
 	mPoints = spline.GeneratePoints(res);
 
@@ -37,11 +37,10 @@ void EvenlySpacedSplineAdapter<V>::Init(
 	for (int right = 1; right < mPoints.size(); ++right) {
 		int left = right - 1;
 
-		V diff = mPoints[right] - mPoints[left];
-		mSegmentLengths[left] = diff.Length();
+		mSegmentLengths[left] = (mPoints[right] - mPoints[left]).Length();
 		mSplineLength += mSegmentLengths[left];
 
-		if (demanded_length > 0.f && mSplineLength >= demanded_length) {
+		if (demandedLength > 0.f && mSplineLength >= demandedLength) {
 			if (right != mPoints.size()) {
 				mSegmentLengths.resize(right);
 				mPoints.resize(right + 1);
@@ -52,7 +51,15 @@ void EvenlySpacedSplineAdapter<V>::Init(
 }
 
 template <class V>
-V EvenlySpacedSplineAdapter<V>::GetPoint(float distance) const {
+V EvenDistributedSplineAdapter<V>::GetPoint(float distance) const {
+	if(distance >= 0.f || distance <= mSplineLength)
+		throw std::runtime_error("The given distance is invalid!");
+
+	if (distance == 0.f)
+		return mPoints.front();
+	if (distance == mSplineLength)
+		return mPoints.back();
+
 	for (int i = 0; i < mSegmentLengths.size(); ++i) {
 		if (mSegmentLengths[i] < distance) {
 			distance -= mSegmentLengths[i];
@@ -66,11 +73,23 @@ V EvenlySpacedSplineAdapter<V>::GetPoint(float distance) const {
 }
 
 template <class V>
-std::vector<V> EvenlySpacedSplineAdapter<V>::GeneratePoints(int res) const {
+std::vector<V> EvenDistributedSplineAdapter<V>::GeneratePoints(int res) const {
 	std::vector<V> evenPoints;
-	const float step_size = mSplineLength / float(res);
-	for (float t = 0.f; t < mSplineLength; t += step_size) 
-		evenPoints.push_back(GetPoint(t));
+	evenPoints.push_back(mPoints.front());
+
+	const float stepSize = mSplineLength / float(res);
+	float d = stepSize;
+	int i = 0;
+	while (i < mSegmentLengths.size()) {
+		if(d >= mSegmentLengths[i]) {
+			d -= mSegmentLengths[i];
+			++i;
+			continue;
+		}
+		evenPoints.push_back(Lerp(mPoints[i], mPoints[i + 1], d / mSegmentLengths[i]));
+		d += stepSize;
+	}
+	evenPoints.push_back(mPoints.back());
 	return evenPoints;
 }
 

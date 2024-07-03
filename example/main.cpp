@@ -2,7 +2,7 @@
 #include <memory>
 
 #include <splines/catmull_rom.h>
-#include <splines/spline_even_adapter.h>
+#include <splines/even_distribiuted_spline_adapter.h>
 #include "vector2.h"
 
 #pragma region Macros
@@ -72,5 +72,5 @@ int main(){
 	std::cout << "[Normal Spline]" << std::endl;
 	PrintAsArray(res);
 	std::cout << "[Even Spline]" << std::endl;
-	PrintAsArray(EvenlySpacedSplineAdapter(*curve).GeneratePoints());
+	PrintAsArray(EvenDistributedSplineAdapter(*curve).GeneratePoints());
 }
