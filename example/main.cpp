@@ -2,6 +2,7 @@
 #include <memory>
 
 #include <splines/catmull_rom.h>
+#include <splines/spline_even_adapter.h>
 #include "vector2.h"
 
 #pragma region Macros
@@ -59,7 +60,7 @@ int main(){
 	points.push_back({ -2.f, 6.f });
 	points.push_back({ 12.f, 12.f });
 	points.push_back({ 10.f, 14.f });
-
+	points.push_back({ 5.f, 19.f });
 
 	curve->AddSupportPoints(points.begin(), points.end());
 
@@ -68,12 +69,8 @@ int main(){
 		res.push_back((*curve)(t));
 	}
 
-#ifdef DEBUG
+	std::cout << "[Normal Spline]" << std::endl;
 	PrintAsArray(res);
-	//PrintAsArray(curve->GeneratePoints(20));
-#else
-	PrintVectorNodeData(curve->GeneratePoints());
-#endif // DEBUG
-
-	
+	std::cout << "[Even Spline]" << std::endl;
+	PrintAsArray(EvenlySpacedSplineAdapter(*curve).GeneratePoints());
 }
