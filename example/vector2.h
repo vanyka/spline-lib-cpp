@@ -101,6 +101,10 @@ std::ostream& operator<<(std::ostream& os, const Vector2<T>& v) {
     return os << '(' << v.x << ", " << v.y << ')';
 }
 
+template<class T>
+Vector2<T> Lerp(const Vector2<T>& v1, const Vector2<T>& v2, const float& t) 
+{ return v1 + (v2 - v1) * t; }
+
 typedef Vector2<float> Vector2f;
 typedef Vector2<int> Vector2i;
 
