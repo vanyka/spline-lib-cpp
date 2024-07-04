@@ -1,5 +1,6 @@
-# C++ Header-Only Spline Library
+# [C++ Header-Only Spline Library](https://github.com/vanyka/splines-lib-cpp)
 This Library calculates different types of splines(Linear, Catmull Rom, Bezier) based on the given support points.
+
 
 ## Features
 - For Catmull-Rom splines there is a setting by which you can set your spline to pass all your given points or if it is unset then the first and last given point is a control point only (curve does not passes through).
@@ -18,3 +19,6 @@ Generate it by using the following command at the root directory:
 ```
 cmake -B build
 ```
+
+## Credits
+This project is created by [Ivan Alekseev](https://github.com/vanyka).
