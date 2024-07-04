@@ -2,7 +2,6 @@
 #define __H_VANYKA_SPLINE_EVEN_ADAPTER
 
 #include <vector>
-#include <optional>
 #include "spline.h"
 
 namespace vanyka
@@ -65,7 +64,7 @@ V EvenDistributedSplineAdapter<V>::GetPoint(float distance) const {
 			distance -= mSegmentLengths[i];
 			continue;
 		}
-		float t = distance / mSegmentLengths[i];
+		const float t = distance / mSegmentLengths[i];
 		return Lerp(mPoints[i], mPoints[i + 1], t);
 	}
 	throw std::runtime_error("The given distance is greater, than the length of spline!");
@@ -74,10 +73,13 @@ V EvenDistributedSplineAdapter<V>::GetPoint(float distance) const {
 
 template <class V>
 std::vector<V> EvenDistributedSplineAdapter<V>::GeneratePoints(int res) const {
+	if(res < 2)
+		throw std::runtime_error("The even spline resolution must be at least 2!");
+
 	std::vector<V> evenPoints;
 	evenPoints.push_back(mPoints.front());
 
-	const float stepSize = mSplineLength / float(res);
+	const float stepSize = mSplineLength / float(res - 1);
 	float d = stepSize;
 	int i = 0;
 	while (i < mSegmentLengths.size()) {
@@ -86,7 +88,8 @@ std::vector<V> EvenDistributedSplineAdapter<V>::GeneratePoints(int res) const {
 			++i;
 			continue;
 		}
-		evenPoints.push_back(Lerp(mPoints[i], mPoints[i + 1], d / mSegmentLengths[i]));
+		const float t = d / mSegmentLengths[i];
+		evenPoints.push_back(Lerp(mPoints[i], mPoints[i + 1], t));
 		d += stepSize;
 	}
 	evenPoints.push_back(mPoints.back());
