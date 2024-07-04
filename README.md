@@ -3,6 +3,7 @@ This Library calculates different types of splines(Linear, Catmull Rom, Bezier) 
 
 ## Features
 - For Catmull-Rom splines there is a setting by which you can set your spline to pass all your given points or if it is unset then the first and last given point is a control point only (curve does not passes through).
+- With EvenDistributedSplineAdapter you can transform any Spline into an Even Distributed Spline.
 
 ## Setup the Example project
 You will need to have the following installed:
