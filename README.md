@@ -1,4 +1,4 @@
-# [C++ Header-Only Spline Library](https://github.com/vanyka/splines-lib-cpp)
+# [C++ Header-Only Spline Library](https://github.com/vanyka/spline-lib-cpp)
 This Library calculates different types of splines(Linear, Catmull Rom, Bezier) based on the given support points.
 
 
