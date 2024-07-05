@@ -5,7 +5,7 @@
 
 #define mSupportPoints this->mSupportPoints
 
-namespace vanyka
+namespace vanyka::spline
 {
 
 enum class BezierType : char
@@ -130,7 +130,7 @@ std::vector<V> BezierSpline<V>::GeneratePoints(int res) const
     return points;
 }
 
-} // vanyka
+} // vanyka::spline
 
 #undef mSupportPoints
 
