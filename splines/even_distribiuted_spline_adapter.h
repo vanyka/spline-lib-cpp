@@ -20,7 +20,7 @@ public:
 	EvenDistributedSplineAdapter(const Spline<V>& spline, const int& resolution)
 		{ Init(spline, 0.f, resolution); }
 	V operator()(float distance) const;
-	std::vector<V> GeneratePoints(int res = 100) const;
+	std::vector<V> GeneratePoints(int res = 100, float length = 0.f) const;
 	float GetSplineLength() const { return mSplineLength; }
 };
 
@@ -71,7 +71,7 @@ V EvenDistributedSplineAdapter<V>::operator()(float distance) const {
 }
 
 template <class V>
-std::vector<V> EvenDistributedSplineAdapter<V>::GeneratePoints(int res) const {
+std::vector<V> EvenDistributedSplineAdapter<V>::GeneratePoints(int res, float length) const {
 	if(res < 2)
 		throw std::runtime_error("The even spline resolution must be at least 2!");
 

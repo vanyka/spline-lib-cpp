@@ -14,7 +14,7 @@ class LinearSpline : public Spline<V>
 	V Lerp(const float &t, const V &p1, const V &p2) const { return p1 + (p2 - p1) * t; }
 
 public:
-	std::vector<V> GeneratePoints(int res = 10) const override;
+	std::vector<V> GeneratePoints(int res = 10, float length = 0.f) const override;
 	V operator()(const float& t) const override;
 };
 
@@ -30,7 +30,7 @@ V LinearSpline<V>::operator()(const float& t) const {
 }
 
 template <class V>
-std::vector<V> LinearSpline<V>::GeneratePoints(int res) const
+std::vector<V> LinearSpline<V>::GeneratePoints(int res, float length) const
 {
 	std::vector<V> points;
 

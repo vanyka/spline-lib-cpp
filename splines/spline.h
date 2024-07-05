@@ -17,7 +17,7 @@ public:
     void AddSupportPoint(const V &p);
     template <class It>
     void AddSupportPoints(const It &begin, const It &end);
-    virtual std::vector<V> GeneratePoints(int res = 10) const = 0;
+    virtual std::vector<V> GeneratePoints(int res = 10, float length = 0.f) const = 0;
     virtual V operator()(const float& t) const = 0;
 };
 

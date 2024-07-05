@@ -29,7 +29,7 @@ public:
     BezierSpline(BezierType bezierType = BezierType::TWO_CONTROL_POINT) : mBezierType(bezierType) {}
 
     BezierType GetType() const { return mBezierType; }
-    std::vector<V> GeneratePoints(int res = 10) const override;
+    std::vector<V> GeneratePoints(int res = 10, float length = 0.f) const override;
     V operator()(const float& t) const override;
 };
 
@@ -110,7 +110,7 @@ inline void BezierSpline<V>::GeneratePoints4(std::vector<V> &points, const int &
 }
 
 template <class V>
-std::vector<V> BezierSpline<V>::GeneratePoints(int res) const
+std::vector<V> BezierSpline<V>::GeneratePoints(int res, float length) const
 {
     std::vector<V> points;
     if (mSupportPoints.size() < 4)

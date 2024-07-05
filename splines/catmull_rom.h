@@ -14,7 +14,7 @@ class CatmullRomSpline : public Spline<V>
 	static V Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
 
 public:
-	std::vector<V> GeneratePoints(int res = 10) const override;
+	std::vector<V> GeneratePoints(int res = 10, float length = 0.f) const override;
 	V operator()(const float& t) const override;
 };
 
@@ -66,7 +66,7 @@ V CatmullRomSpline<V, PassAllSupportPoint>::operator()(const float& t) const {
 }
 
 template <class V, bool PassAllSupportPoint>
-std::vector<V> CatmullRomSpline<V, PassAllSupportPoint>::GeneratePoints(int res) const
+std::vector<V> CatmullRomSpline<V, PassAllSupportPoint>::GeneratePoints(int res, float length) const
 {
 	std::vector<V> points;
 	if (mSupportPoints.size() < 4)
