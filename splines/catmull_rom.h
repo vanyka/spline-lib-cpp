@@ -5,7 +5,7 @@
 
 #define mSupportPoints this->mSupportPoints
 
-namespace vanyka
+namespace vanyka::spline
 {
 
 template <class V, bool PassAllSupportPoint = true>
@@ -112,7 +112,7 @@ std::vector<V> CatmullRomSpline<V, PassAllSupportPoint>::GeneratePoints(int res)
 	return points;
 }
 
-} // vanyka
+} // vanyka::spline
 
 #undef mSupportPoints
 

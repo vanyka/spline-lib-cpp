@@ -1,10 +1,10 @@
-#ifndef __H_VANYKA_SPLINE_EVEN_ADAPTER
-#define __H_VANYKA_SPLINE_EVEN_ADAPTER
+#ifndef __H_VANYKA_EVEN_DISTRIBUTED_SPLINE_ADAPTER
+#define __H_VANYKA_EVEN_DISTRIBUTED_SPLINE_ADAPTER
 
 #include <vector>
 #include "spline.h"
 
-namespace vanyka
+namespace vanyka::spline
 {
 
 template <class V>
@@ -95,5 +95,5 @@ std::vector<V> EvenDistributedSplineAdapter<V>::GeneratePoints(int res) const {
 	return evenPoints;
 }
 
-} // vanyka
+} // vanyka::spline
 #endif

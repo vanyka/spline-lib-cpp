@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace vanyka
+namespace vanyka::spline
 {
 
 template <class V>
@@ -44,5 +44,5 @@ void Spline<V>::AddSupportPoint(const V &p)
     mSupportPoints.push_back(p);
 }
 
-} // vanyka
+} // vanyka::spline
 #endif

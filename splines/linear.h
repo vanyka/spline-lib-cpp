@@ -5,7 +5,7 @@
 
 #define mSupportPoints this->mSupportPoints
 
-namespace vanyka
+namespace vanyka::spline
 {
 
 template <class V>
@@ -60,7 +60,7 @@ std::vector<V> LinearSpline<V>::GeneratePoints(int res) const
 	return points;
 }
 
-} // vanyka
+} // vanyka::spline
 
 #undef mSupportPoints
 
