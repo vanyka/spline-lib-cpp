@@ -2,6 +2,7 @@
 #define __H_VANYKA_SPLINE
 
 #include <vector>
+#include "even_distribiuted_spline_adapter.h"
 
 namespace vanyka
 {
@@ -19,6 +20,9 @@ public:
     void AddSupportPoints(const It &begin, const It &end);
     virtual std::vector<V> GeneratePoints(int res = 10) const = 0;
     virtual V operator()(const float& t) const = 0;
+    EvenDistributedSplineAdapter<V> GetEvenDistributed(const int& processResolution, const float& demandedLength = 0.f) {
+        return EvenDistributedSplineAdapter<V>(*this, processResolution, demandedLength);
+    }
 };
 
 template <class V>

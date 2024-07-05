@@ -72,5 +72,5 @@ int main(){
 	std::cout << "[Normal Spline]" << std::endl;
 	PrintAsArray(res);
 	std::cout << "[Even Spline]" << std::endl;
-	PrintAsArray(EvenDistributedSplineAdapter(*curve).GeneratePoints());
+	PrintAsArray(curve->GetEvenDistributed(10).GeneratePoints());
 }

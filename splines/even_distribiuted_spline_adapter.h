@@ -8,27 +8,26 @@ namespace vanyka
 {
 
 template <class V>
+class Spline;
+
+template <class V>
 class EvenDistributedSplineAdapter {
 	std::vector<V>		mPoints;
 	std::vector<float>	mSegmentLengths;
 	float				mSplineLength;
-	void Init(const Spline<V>& spline, float demandedLength, int resolution);
 	V Lerp(const V& v1, const V& v2, const float& t) const { return v1 + (v2 - v1) * t; }
 public:
-	EvenDistributedSplineAdapter(const Spline<V>& spline, const float& demandedLength = 0.f, const int& resolution = 10)
-		{ Init(spline, demandedLength, resolution); }
-	EvenDistributedSplineAdapter(const Spline<V>& spline, const int& resolution)
-		{ Init(spline, 0.f, resolution); }
+	EvenDistributedSplineAdapter(const Spline<V>& spline, const int& processResolution, const float& demandedLength = 0.f);
 	V operator()(float distance) const;
 	std::vector<V> GeneratePoints(int res = 100) const;
 	float GetSplineLength() const { return mSplineLength; }
 };
 
 template <class V>
-void EvenDistributedSplineAdapter<V>::Init(
-	const Spline<V>& spline, float demandedLength, int res
+EvenDistributedSplineAdapter<V>::EvenDistributedSplineAdapter(
+	const Spline<V>& spline, const int& procRes, const float& demandedLength
 ) {
-	mPoints = spline.GeneratePoints(res);
+	mPoints = spline.GeneratePoints(procRes);
 
 	mSplineLength = 0.f;
 	mSegmentLengths = std::vector<float>(mPoints.size() - 1);
