@@ -7,54 +7,60 @@ A header-only C++ library that provides a variety of splines for curve interpola
 - New spline types can be easily implemented by deriving the `Spline` interface.
 - templated implementation for using your already used Vector implementation. (An example implementation is provided in `example/vector2.h`)
 - Both using splines as a Functor for interpolating over or generating points with a given resolution is supported.
-- An adapter for even distributed splines is provided by `EvenDistributedSplineAdapter` class.
+- A transformation class to even distributed for any spline is provided by `EvenDistributedSpline` class.
 
 ## Code examples
 ### Creating a Catmull-Rom spline
 ```cpp
-#include "spline.h"
-#include "catmull_rom.h"
+#include "splines/spline.h"
+#include "splines/catmull_rom.h"
 #include "vector2.h"
+
+using namespace vanyka::spline;
+using vanyka::Vector2f;
 
 int main() {
     Spline<Vector2f>* spline = new CatmullRomSpline<Vector2f>();
-    spline->AddSupportPoint(Vector2f(0.f, 0.f));
-    spline->AddSupportPoint(Vector2f(1.f, .5f));
-    spline->AddSupportPoint(Vector2f(2.f, .2f));
-    spline->AddSupportPoint(Vector2f(1.f, .3f));
+	spline->AddSupportPoint({ 0.f, 0.f });
+	spline->AddSupportPoint({ 1.f, .5f });
+	spline->AddSupportPoint({ 2.f, .2f });
+	spline->AddSupportPoint({ 1.f, .3f });
 
-    // Generating Points over the spline
-    std::vector<Vector2f> points = spline->GeneratePoints(100);
+	// Generating Points over the spline
+	std::vector<Vector2f> points = spline->GeneratePoints(100);
 
-    // Interpolating over spline using the functor
-    // Note: the interpolation value must be between 0 and 1
-    Vector2f spline_center = *spline(0.5);
-    
-    delete spline;
+	// Interpolating over spline using the functor
+	// Note: the interpolation value must be between 0 and 1
+	Vector2f spline_center = (*spline)(0.5);
+
+	delete spline;
 }
 ```
-### Using the `EvenDistributedSplineAdapter` class
+### Using the `EvenDistributedSpline` class
 ```cpp
-#include "catmull_rom.h"
-#include "even_distribiuted_spline_adapter.h"
+#include "splines/catmull_rom.h"
+#include "splines/even_distribiuted_spline_adapter.h"
 #include "vector2.h"
 
+using namespace vanyka::spline;
+using vanyka::Vector2f;
+
 int main() {
-    CatmullRomSpline<Vector2f> spline;
-    spline.AddSupportPoint(Vector2f(0.f, 0.f));
-    spline.AddSupportPoint(Vector2f(1.f, .5f));
-    spline.AddSupportPoint(Vector2f(2.f, .2f));
-    spline.AddSupportPoint(Vector2f(1.f, .3f));
+	CatmullRomSpline<Vector2f> spline;
+	spline.AddSupportPoint({ 0.f, 0.f });
+	spline.AddSupportPoint({ 1.f, .5f });
+	spline.AddSupportPoint({ 2.f, .2f });
+	spline.AddSupportPoint({ 1.f, .3f });
 
-    auto even_spline = EvenDistributedSplineAdapter(spline).GeneratePoints(100);
+	EvenDistributedSpline<Vector2f> even_spline = EvenDistributedSpline(spline, 0.f, 10);
 
-    // Generating Points over the even spline
-    std::vector<Vector2f> points = even_spline.GeneratePoints(100);
+	// Generating Points over the even spline
+	std::vector<Vector2f> points = even_spline.GeneratePoints(100);
 
-    // Interpolating over even spline using the functor
-    // Note: the interpolation value is now a distance from the start of the spline
-    Vector2f point1 = even_spline(0.7f);
-    Vector2f point2 = even_spline(1.4f);
+	// Interpolating over even spline using the functor
+	// Note: the interpolation value is now a distance from the start of the spline
+	Vector2f point1 = even_spline(0.7f);
+	Vector2f point2 = even_spline(1.4f);
 }
 ```
 
