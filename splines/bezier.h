@@ -17,16 +17,16 @@ enum class BezierType : char
 template <class V>
 class BezierSpline : public Spline<V>
 {
+    BezierType mBezierType;
+
     static V Interpolate3(const float &t, const V &p1, const V &p2, const V &p3);
     static V Interpolate4(const float &t, const V &p1, const V &p2, const V &p3, const V &p4);
 
     void GeneratePoints3(std::vector<V> &points, const int &res) const;
     void GeneratePoints4(std::vector<V> &points, const int &res) const;
-
-    BezierType mBezierType;
-
 public:
     BezierSpline(BezierType bezierType = BezierType::TWO_CONTROL_POINT) : mBezierType(bezierType) {}
+    ~BezierSpline() = default;
 
     BezierType GetType() const { return mBezierType; }
     std::vector<V> GeneratePoints(int res = 10) const override;

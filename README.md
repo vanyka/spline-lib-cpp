@@ -1,10 +1,68 @@
 # [C++ Header-Only Spline Library](https://github.com/vanyka/spline-lib-cpp)
-This Library calculates different types of splines(Linear, Catmull Rom, Bezier) based on the given support points.
-
+A header-only C++ library that provides a variety of splines for curve interpolation, such as Catmull-Rom, and Bezier splines.
 
 ## Features
-- For Catmull-Rom splines there is a setting by which you can set your spline to pass all your given points or if it is unset then the first and last given point is a control point only (curve does not passes through).
-- With EvenDistributedSplineAdapter you can transform any Spline into an Even Distributed Spline.
+- Easy to use interface for using splines.
+- Implementation for Catmull-Rom and Bezier splines is included.
+- New spline types can be easily implemented by deriving the `Spline` interface.
+- templated implementation for using your already used Vector implementation. (An example implementation is provided in `example/vector2.h`)
+- Both using splines as a Functor for interpolating over or generating points with a given resolution is supported.
+- A transformation class to even distributed for any spline is provided by `EvenDistributedSpline` class.
+
+## Code examples
+### Creating a Catmull-Rom spline
+```cpp
+#include "splines/spline.h"
+#include "splines/catmull_rom.h"
+#include "vector2.h"
+
+using namespace vanyka::spline;
+using vanyka::Vector2f;
+
+int main() {
+    Spline<Vector2f>* spline = new CatmullRomSpline<Vector2f>();
+    spline->AddSupportPoint({ 0.f, 0.f });
+    spline->AddSupportPoint({ 1.f, .5f });
+    spline->AddSupportPoint({ 2.f, .2f });
+    spline->AddSupportPoint({ 1.f, .3f });
+
+    // Generating Points over the spline
+    std::vector<Vector2f> points = spline->GeneratePoints(100);
+
+    // Interpolating over spline using the functor
+    // Note: the interpolation value must be between 0 and 1
+    Vector2f spline_center = (*spline)(0.5);
+
+    delete spline;
+}
+```
+### Using the `EvenDistributedSpline` class
+```cpp
+#include "splines/catmull_rom.h"
+#include "splines/even_distribiuted_spline.h"
+#include "vector2.h"
+
+using namespace vanyka::spline;
+using vanyka::Vector2f;
+
+int main() {
+    CatmullRomSpline<Vector2f> spline;
+    spline.AddSupportPoint({ 0.f, 0.f });
+    spline.AddSupportPoint({ 1.f, .5f });
+    spline.AddSupportPoint({ 2.f, .2f });
+    spline.AddSupportPoint({ 1.f, .3f });
+
+    EvenDistributedSpline<Vector2f> even_spline = EvenDistributedSpline(spline, 0.f, 10);
+
+    // Generating Points over the even spline
+    std::vector<Vector2f> points = even_spline.GeneratePoints(100);
+
+    // Interpolating over even spline using the functor
+    // Note: the interpolation value is now a distance from the start of the spline
+    Vector2f point1 = even_spline(0.7f);
+    Vector2f point2 = even_spline(1.4f);
+}
+```
 
 ## Setup the Example project
 You will need to have the following installed:
@@ -16,7 +74,7 @@ By executing `scripts/default.bat` file, the detected IDE project will be genera
 ### Other OS
 
 Generate it by using the following command at the root directory:
-```
+```bash
 cmake -B build
 ```
 

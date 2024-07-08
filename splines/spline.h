@@ -11,9 +11,10 @@ class Spline
 {
 protected:
     std::vector<V> mSupportPoints;
-
+    
     static std::pair<float, size_t> CalculateSegmentInfo(const float& t, size_t segmentCount);
 public:
+    virtual ~Spline() = default;
     void AddSupportPoint(const V &p);
     template <class It>
     void AddSupportPoints(const It &begin, const It &end);
