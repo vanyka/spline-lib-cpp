@@ -21,46 +21,46 @@ using vanyka::Vector2f;
 
 int main() {
     Spline<Vector2f>* spline = new CatmullRomSpline<Vector2f>();
-	spline->AddSupportPoint({ 0.f, 0.f });
-	spline->AddSupportPoint({ 1.f, .5f });
-	spline->AddSupportPoint({ 2.f, .2f });
-	spline->AddSupportPoint({ 1.f, .3f });
+    spline->AddSupportPoint({ 0.f, 0.f });
+    spline->AddSupportPoint({ 1.f, .5f });
+    spline->AddSupportPoint({ 2.f, .2f });
+    spline->AddSupportPoint({ 1.f, .3f });
 
-	// Generating Points over the spline
-	std::vector<Vector2f> points = spline->GeneratePoints(100);
+    // Generating Points over the spline
+    std::vector<Vector2f> points = spline->GeneratePoints(100);
 
-	// Interpolating over spline using the functor
-	// Note: the interpolation value must be between 0 and 1
-	Vector2f spline_center = (*spline)(0.5);
+    // Interpolating over spline using the functor
+    // Note: the interpolation value must be between 0 and 1
+    Vector2f spline_center = (*spline)(0.5);
 
-	delete spline;
+    delete spline;
 }
 ```
 ### Using the `EvenDistributedSpline` class
 ```cpp
 #include "splines/catmull_rom.h"
-#include "splines/even_distribiuted_spline_adapter.h"
+#include "splines/even_distribiuted_spline.h"
 #include "vector2.h"
 
 using namespace vanyka::spline;
 using vanyka::Vector2f;
 
 int main() {
-	CatmullRomSpline<Vector2f> spline;
-	spline.AddSupportPoint({ 0.f, 0.f });
-	spline.AddSupportPoint({ 1.f, .5f });
-	spline.AddSupportPoint({ 2.f, .2f });
-	spline.AddSupportPoint({ 1.f, .3f });
+    CatmullRomSpline<Vector2f> spline;
+    spline.AddSupportPoint({ 0.f, 0.f });
+    spline.AddSupportPoint({ 1.f, .5f });
+    spline.AddSupportPoint({ 2.f, .2f });
+    spline.AddSupportPoint({ 1.f, .3f });
 
-	EvenDistributedSpline<Vector2f> even_spline = EvenDistributedSpline(spline, 0.f, 10);
+    EvenDistributedSpline<Vector2f> even_spline = EvenDistributedSpline(spline, 0.f, 10);
 
-	// Generating Points over the even spline
-	std::vector<Vector2f> points = even_spline.GeneratePoints(100);
+    // Generating Points over the even spline
+    std::vector<Vector2f> points = even_spline.GeneratePoints(100);
 
-	// Interpolating over even spline using the functor
-	// Note: the interpolation value is now a distance from the start of the spline
-	Vector2f point1 = even_spline(0.7f);
-	Vector2f point2 = even_spline(1.4f);
+    // Interpolating over even spline using the functor
+    // Note: the interpolation value is now a distance from the start of the spline
+    Vector2f point1 = even_spline(0.7f);
+    Vector2f point2 = even_spline(1.4f);
 }
 ```
 
