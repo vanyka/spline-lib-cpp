@@ -19,7 +19,7 @@ public:
 		{ Init(spline, demandedLength, resolution); }
 	EvenDistributedSplineAdapter(const Spline<V>& spline, const int& resolution)
 		{ Init(spline, 0.f, resolution); }
-	V operator()(float distance) const;
+	V operator()(const float& distance) const;
 	std::vector<V> GeneratePoints(int res = 100) const;
 	float GetSplineLength() const { return mSplineLength; }
 };
@@ -49,8 +49,8 @@ void EvenDistributedSplineAdapter<V>::Init(
 }
 
 template <class V>
-V EvenDistributedSplineAdapter<V>::operator()(float distance) const {
-	if(distance >= 0.f || distance <= mSplineLength)
+V EvenDistributedSplineAdapter<V>::operator()(const float& distance) const {
+	if (distance < 0.f || distance > mSplineLength)
 		throw std::runtime_error("The given distance is invalid!");
 
 	if (distance == 0.f)
@@ -58,12 +58,13 @@ V EvenDistributedSplineAdapter<V>::operator()(float distance) const {
 	if (distance == mSplineLength)
 		return mPoints.back();
 
+	float d = distance;
 	for (int i = 0; i < mSegmentLengths.size(); ++i) {
-		if (mSegmentLengths[i] < distance) {
-			distance -= mSegmentLengths[i];
+		if (mSegmentLengths[i] < d) {
+			d -= mSegmentLengths[i];
 			continue;
 		}
-		const float t = distance / mSegmentLengths[i];
+		const float t = d / mSegmentLengths[i];
 		return Lerp(mPoints[i], mPoints[i + 1], t);
 	}
 	throw std::runtime_error("The given distance is greater, than the length of spline!");
