@@ -12,7 +12,6 @@ template <class V, bool PassAllSupportPoint = true>
 class CatmullRomSpline : public Spline<V>
 {
 	static V Interpolate(float u, const V &P0, const V &P1, const V &P2, const V &P3);
-
 public:
 	std::vector<V> GeneratePoints(int res = 10) const override;
 	V operator()(const float& t) const override;
