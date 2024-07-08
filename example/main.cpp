@@ -2,7 +2,7 @@
 #include <memory>
 
 #include <splines/catmull_rom.h>
-#include <splines/even_distribiuted_spline.h>
+#include <splines/even_distributed_spline.h>
 #include "vector2.h"
 
 #pragma region Macros
