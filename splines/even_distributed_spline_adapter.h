@@ -1,5 +1,5 @@
-#ifndef __H_VANYKA_EVEN_DISTRIBUTED_SPLINE
-#define __H_VANYKA_EVEN_DISTRIBUTED_SPLINE
+#ifndef __H_VANYKA_EVEN_DISTRIBUTED_SPLINE_ADAPTER
+#define __H_VANYKA_EVEN_DISTRIBUTED_SPLINE_ADAPTER
 
 #include <vector>
 #include "spline.h"
@@ -8,24 +8,24 @@ namespace vanyka::spline
 {
 
 template <class V>
-class EvenDistributedSpline {
+class EvenDistributedSplineAdapter {
 	std::vector<V>		mPoints;
 	std::vector<float>	mSegmentLengths;
 	float				mSplineLength;
-	void Init(const Spline<V>& spline, float demandedLength, int resolution);
-	V Lerp(const V& v1, const V& v2, const float& t) const { return v1 + (v2 - v1) * t; }
+	void 	Init(const Spline<V>& spline, float demandedLength, int resolution);
+	V 		Lerp(const V& v1, const V& v2, const float& t) const { return v1 + (v2 - v1) * t; }
 public:
-	EvenDistributedSpline(const Spline<V>& spline, const float& demandedLength = 0.f, const int& resolution = 10)
+	EvenDistributedSplineAdapter(const Spline<V>& spline, const float& demandedLength = 0.f, const int& resolution = 10)
 		{ Init(spline, demandedLength, resolution); }
-	EvenDistributedSpline(const Spline<V>& spline, const int& resolution)
+	EvenDistributedSplineAdapter(const Spline<V>& spline, const int& resolution)
 		{ Init(spline, 0.f, resolution); }
-	V operator()(const float& distance) const;
-	std::vector<V> GeneratePoints(int res = 100) const;
-	float GetSplineLength() const { return mSplineLength; }
+	V 				operator()(const float& distance) const;
+	std::vector<V> 	GeneratePoints(int res = 100) const;
+	float 			GetSplineLength() const { return mSplineLength; }
 };
 
 template <class V>
-void EvenDistributedSpline<V>::Init(
+void EvenDistributedSplineAdapter<V>::Init(
 	const Spline<V>& spline, float demandedLength, int res
 ) {
 	mPoints = spline.GeneratePoints(res);
@@ -49,7 +49,7 @@ void EvenDistributedSpline<V>::Init(
 }
 
 template <class V>
-V EvenDistributedSpline<V>::operator()(const float& distance) const {
+V EvenDistributedSplineAdapter<V>::operator()(const float& distance) const {
 	if (distance < 0.f || distance > mSplineLength)
 		throw std::runtime_error("The given distance is invalid!");
 
@@ -72,7 +72,7 @@ V EvenDistributedSpline<V>::operator()(const float& distance) const {
 }
 
 template <class V>
-std::vector<V> EvenDistributedSpline<V>::GeneratePoints(int res) const {
+std::vector<V> EvenDistributedSplineAdapter<V>::GeneratePoints(int res) const {
 	if(res < 2)
 		throw std::runtime_error("The even spline resolution must be at least 2!");
 

@@ -7,7 +7,7 @@ A header-only C++ library that provides a variety of splines for curve interpola
 - New spline types can be easily implemented by deriving the `Spline` interface.
 - templated implementation for using your already used Vector implementation. (An example implementation is provided in `example/vector2.h`)
 - Both using splines as a Functor for interpolating over or generating points with a given resolution is supported.
-- A transformation class to even distributed for any spline is provided by `EvenDistributedSpline` class.
+- A transformation class to even distributed for any spline is provided by `EvenDistributedSplineAdapter` class.
 
 ## Code examples
 ### Creating a Catmull-Rom spline
@@ -36,10 +36,10 @@ int main() {
     delete spline;
 }
 ```
-### Using the `EvenDistributedSpline` class
+### Using the `EvenDistributedSplineAdapter` class
 ```cpp
 #include "splines/catmull_rom.h"
-#include "splines/even_distributed_spline.h"
+#include "splines/even_distributed_spline_adapter.h"
 #include "vector2.h"
 
 using namespace vanyka::spline;
@@ -52,7 +52,7 @@ int main() {
     spline.AddSupportPoint({ 2.f, .2f });
     spline.AddSupportPoint({ 1.f, .3f });
 
-    EvenDistributedSpline<Vector2f> even_spline = EvenDistributedSpline(spline, 0.f, 10);
+    EvenDistributedSplineAdapter<Vector2f> even_spline = EvenDistributedSplineAdapter(spline, 0.f, 10);
 
     // Generating Points over the even spline
     std::vector<Vector2f> points = even_spline.GeneratePoints(100);
