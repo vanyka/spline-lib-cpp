@@ -28,9 +28,9 @@ public:
     BezierSpline(BezierType bezierType = BezierType::TWO_CONTROL_POINT) : mBezierType(bezierType) {}
     ~BezierSpline() = default;
 
-    BezierType GetType() const { return mBezierType; }
-    std::vector<V> GeneratePoints(int res = 10) const override;
-    V operator()(const float& t) const override;
+    BezierType      GetType() const { return mBezierType; }
+    std::vector<V>  GeneratePoints(int res = 10) const override;
+    V               operator()(const float& t) const override;
 };
 
 template <class V>

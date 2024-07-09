@@ -15,11 +15,13 @@ protected:
     static std::pair<float, size_t> CalculateSegmentInfo(const float& t, size_t segmentCount);
 public:
     virtual ~Spline() = default;
-    void AddSupportPoint(const V &p);
+    std::vector<V>&         GetSupportPoints() { return mSupportPoints; }
+    std::vector<V>          GetSupportPoints() const { return mSupportPoints; }
+    void                    AddSupportPoint(const V &p);
     template <class It>
-    void AddSupportPoints(const It &begin, const It &end);
-    virtual std::vector<V> GeneratePoints(int res = 10) const = 0;
-    virtual V operator()(const float& t) const = 0;
+    void                    AddSupportPoints(const It &begin, const It &end);
+    virtual std::vector<V>  GeneratePoints(int res = 10) const = 0;
+    virtual V               operator()(const float& t) const = 0;
 };
 
 template <class V>
