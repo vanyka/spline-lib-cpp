@@ -19,12 +19,47 @@ A header-only C++ library that provides a variety of splines for curve interpola
 using namespace vanyka::spline;
 using vanyka::Vector2f;
 
-int main() {
+Spline<Vector2f>* method1() {
     Spline<Vector2f>* spline = new CatmullRomSpline<Vector2f>();
     spline->AddSupportPoint({ 0.f, 0.f });
     spline->AddSupportPoint({ 1.f, .5f });
     spline->AddSupportPoint({ 2.f, .2f });
     spline->AddSupportPoint({ 1.f, .3f });
+
+    return spline;
+}
+
+Spline<Vector2f>* method2() {
+    Spline<Vector2f>* spline = new CatmullRomSpline<Vector2f>();
+    spline->AddSupportPoints<4>(new Vector2f[]{
+        { 0.f, 0.f },
+        { 1.f, .5f },
+        { 2.f, .2f },
+        { 1.f, .3f }
+    });
+
+    return spline;
+}
+
+Spline<Vector2f>* method3() {
+    Spline<Vector2f>* spline = new CatmullRomSpline<Vector2f>();
+    std::vector<Vector2f> support_points = {
+        { 0.f, 0.f },
+        { 1.f, .5f },
+        { 2.f, .2f },
+        { 1.f, .3f }
+    };
+
+    spline->AddSupportPoints(support_points.begin(), support_points.end());
+
+    return spline;
+}
+
+int main() {
+    Spline<Vector2f>* spline =
+        method1();
+//      method2();
+//      method3();
 
     // Generating Points over the spline
     std::vector<Vector2f> points = spline->GeneratePoints(100);
@@ -47,10 +82,12 @@ using vanyka::Vector2f;
 
 int main() {
     CatmullRomSpline<Vector2f> spline;
-    spline.AddSupportPoint({ 0.f, 0.f });
-    spline.AddSupportPoint({ 1.f, .5f });
-    spline.AddSupportPoint({ 2.f, .2f });
-    spline.AddSupportPoint({ 1.f, .3f });
+    spline->AddSupportPoints<4>(new Vector2f[]{
+        { 0.f, 0.f },
+        { 1.f, .5f },
+        { 2.f, .2f },
+        { 1.f, .3f }
+    });
 
     EvenDistributedSplineAdapter<Vector2f> even_spline = EvenDistributedSplineAdapter(spline, 0.f, 10);
 
