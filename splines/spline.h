@@ -18,6 +18,8 @@ public:
     std::vector<V>&         GetSupportPoints() { return mSupportPoints; }
     std::vector<V>          GetSupportPoints() const { return mSupportPoints; }
     void                    AddSupportPoint(const V &p);
+    template <int N>
+    void                    AddSupportPoints(V points[N]);
     template <class It>
     void                    AddSupportPoints(const It &begin, const It &end);
     virtual std::vector<V>  GeneratePoints(int res = 10) const = 0;
@@ -34,11 +36,26 @@ std::pair<float, size_t> Spline<V>::CalculateSegmentInfo(const float& t, size_t 
 }
 
 template <class V>
+template <int N>
+void Spline<V>::AddSupportPoints(V points[N])
+{
+    auto prev_size = mSupportPoints.size();
+    mSupportPoints.resize(prev_size + N);
+		for (int i = 0; i < N; ++i)
+			mSupportPoints[prev_size + i] = points[i];
+}
+
+template <class V>
 template <class It>
 void Spline<V>::AddSupportPoints(const It &begin, const It &end)
 {
+    int N = std::distance(begin, end);
+	auto prev_size = mSupportPoints.size();
+	mSupportPoints.resize(prev_size + N);
+
+    int i = 0;
     for (It current = begin; current != end; ++current)
-        AddSupportPoint(*current);
+        mSupportPoints[prev_size + i++] = *current;
 }
 
 template <class V>
