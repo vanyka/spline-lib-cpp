@@ -24,6 +24,10 @@ public:
 	void                    AddSupportPoints(const It &begin, const It &end);
 	virtual std::vector<V>  GeneratePoints(int res = 10) const = 0;
 	virtual V               operator()(const float& t) const = 0;
+	V						GetDirVector(const float& t) const {
+		constexpr float epsilon = 0.0001f;
+		return (*this)(std::min(t + epsilon, 1.f)) - (*this)(std::max(t - epsilon, 0.f));
+	}
 };
 
 template <class V>
