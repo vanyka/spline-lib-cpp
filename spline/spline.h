@@ -6,6 +6,8 @@
 namespace vanyka::spline
 {
 
+// TODO: make the spline class not relative, but distance based
+
 template <class V>
 class Spline
 {
